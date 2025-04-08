@@ -1,0 +1,24 @@
+,phoronix_result,
+
+ ,,"phoronix_config"
+Processor,,Intel Core i7-1165G7 @ 4.70GHz (4 Cores / 8 Threads)
+Motherboard,,LENOVO ThinkPad X1 Carbon Gen 9 20XW005NMH (N32ET75W 1.51 BIOS)
+Chipset,,Intel Tiger Lake-LP
+Memory,,8 x 2GB LPDDR4-4267MT/s SK Hynix HCNNNCPMMLXR-
+Disk,,512GB SAMSUNG MZVL2512HCJQ-00BL7
+Graphics,,Intel Xe TGL GT2 15GB
+Audio,,Realtek ALC287
+Monitor,,PL2792QN
+Network,,Intel Wi-Fi 6 AX201
+OS,,Ubuntu 22.04
+Kernel,,6.8.0-52-generic (x86_64)
+Desktop,,GNOME Shell 42.9
+Display Server,,X Server + Wayland
+OpenGL,,4.6 Mesa 23.2.1-1ubuntu3.1~22.04.3
+Compiler,,GCC 11.4.0 + LLVM 14.0.0
+File-System,,ext4
+Screen Resolution,,2560x2640
+
+ ,,"phoronix_config"
+"C-Ray - Resolution: 1080p - Rays Per Pixel: 16 (sec)",LIB,318.432
+

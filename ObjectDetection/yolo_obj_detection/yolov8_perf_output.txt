@@ -1,0 +1,14 @@
+
+ Performance counter stats for 'python3 -c import time; time.sleep(0.001)':
+
+        42,879,458      instructions                     #    1.43  insn per cycle            
+        29,905,240      cycles                                                                
+           111,927      cache-misses                                                          
+           316,493      branch-misses                                                         
+
+       0.011405246 seconds time elapsed
+
+       0.007519000 seconds user
+       0.002819000 seconds sys
+
+

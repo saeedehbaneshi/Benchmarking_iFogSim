@@ -1,0 +1,11 @@
+Metric,Value
+Processing Time (s),16.28820276260376
+Frames Processed,362
+FPS,22.22467421827037
+CPU Usage (%),685.6
+Memory Usage (MB),169.67578125
+Instructions,42895834
+Cycles,30061251
+Cache Misses,111517
+Branch Misses,315317
+Perf Time Elapsed (s),0.011210922

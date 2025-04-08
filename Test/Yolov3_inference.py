@@ -1,3 +1,4 @@
+# +
 # load yolov3 model and perform object detection
 # based on https://github.com/experiencor/keras-yolo3
 import numpy as np
@@ -7,6 +8,193 @@ from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
 from matplotlib import pyplot
 from matplotlib.patches import Rectangle
+
+import os
+import re
+import shutil
+
+# +
+# #!pip install gdown
+def get_folder_path(folder_name, folder_url, colab_drive_path):
+    """
+    Detect the environment (Colab or local) and handle a folder.
+    - In Colab: Use the folder directly from Google Drive.
+    - Locally: Check if the folder exists, and download it from Google Drive if missing.
+    """
+    # Check if running in Colab
+    if 'COLAB_GPU' in os.environ:
+        print("Running in Google Colab")
+
+        # Mount Google Drive
+        from google.colab import drive
+        drive.mount('/content/drive')
+
+        # Path to the folder in Google Drive
+        drive_folder_path = os.path.join(colab_drive_path, folder_name)
+
+        if os.path.exists(drive_folder_path):
+            print(f"Using folder directly from Google Drive: {drive_folder_path}")
+            return drive_folder_path
+        else:
+            raise FileNotFoundError(f"Folder '{folder_name}' not found in Google Drive at {drive_folder_path}. Upload it first.")
+
+    # If running locally (e.g., on KHADAS board)
+    else:
+        print("Running on local/board")
+        local_folder_path = f"../assets/{folder_name}"  # Adjust local folder path as needed
+
+        if not os.path.exists(local_folder_path):
+            print(f"Folder '{folder_name}' not found locally. Downloading from Google Drive...")
+
+            # Extract folder ID from the Google Drive folder URL
+            match = re.search(r"/folders/([^/]+)", folder_url)
+            if not match:
+                raise ValueError("Invalid Google Drive folder link format.")
+            folder_id = match.group(1)
+
+            # Use gdown to download the folder
+            os.system(f"gdown --folder {folder_url} -O {local_folder_path}")
+
+        else:
+            print(f"Folder '{folder_name}' already exists locally.")
+        return local_folder_path
+
+# Configuration
+folder_name = "yolo"
+colab_drive_path = "/content/drive/MyDrive/Benchmarking"
+folder_url = "https://drive.google.com/drive/folders/1-CvPUnxVet-2U5DOaKrDxa1JPvHmgNnk?usp=sharing"  # Replace with your folder link
+
+
+# Access the folder
+assets_path = get_folder_path(folder_name, folder_url, colab_drive_path)
+
+# Use the folder path
+#model_path = os.path.join(assets_path, "Yolov3.h5")
+#image_path = os.path.join(assets_path, "Images", "zebra.jpg")
+
+#print(f"Model path: {model_path}")
+#print(f"Image path: {image_path}")
+
+# +
+if False:
+    def get_file_path(file_name, file_url, colab_drive_folder):
+        """
+        Detect the environment (Colab or local) and handle any file dynamically.
+        - In Colab: Use the file directly from Google Drive.
+        - Locally: Check if the file exists, and download it from Google Drive if missing.
+        """
+        # Check if running in Colab
+        if 'COLAB_GPU' in os.environ:
+            print("Running in Google Colab")
+
+            # Mount Google Drive
+            from google.colab import drive
+            drive.mount('/content/drive')
+
+            # Path to the file in Google Drive
+            drive_file_path = os.path.join(colab_drive_folder, file_name)
+
+            if os.path.exists(drive_file_path):
+                print(f"Using file directly from Google Drive: {drive_file_path}")
+                return drive_file_path
+            else:
+                raise FileNotFoundError(f"File '{file_name}' not found in Google Drive at {drive_file_path}. Upload it first.")
+
+        # If running locally (e.g., on KHADAS board)
+        else:
+            print("Running on local/board")
+            local_path = os.path.join('./', file_name)  # Adjust local folder path as needed
+
+            if not os.path.exists(local_path):
+                print(f"File '{file_name}' not found locally. Downloading from Google Drive...")
+
+                # Extract file ID from the Google Drive file URL
+                match = re.search(r"/file/d/([^/]+)/", file_url)
+                if not match:
+                    raise ValueError("Invalid Google Drive file link format.")
+                file_id = match.group(1)
+                direct_link = f"https://drive.google.com/uc?id={file_id}&export=download"
+
+                # Download the file
+                os.makedirs(os.path.dirname(local_path), exist_ok=True)
+                os.system(f"wget -O {local_path} {direct_link}")
+                print(f"Downloaded file to: {local_path}")
+            else:
+                print(f"File '{file_name}' already exists locally.")
+            return local_path
+
+    model_file_name = "Yolov3.h5"
+    model_file_url = "https://drive.google.com/file/d/1OysAY19cYXJb2dZW-44YN1aMWXxvgWvL/view?usp=sharing"
+
+    image_file_name = "image1.jpg"
+    image_file_url = "https://drive.google.com/file/d/1Eker78uyVBv_pnYhAGp1OCaAWfTW5C35/view?usp=sharing"
+
+
+    colab_drive_folder = "/content/drive/MyDrive/Benchmarking_Assets"
+    # Access model file
+    model_path = get_file_path(model_file_name, model_file_url, colab_drive_folder)
+    print(f"Model path: {model_path}")
+
+    # Access input image
+    image_path = get_file_path(image_file_name, image_file_url, colab_drive_folder)
+    print(f"Image path: {image_path}")
+
+
+
+# +
+
+
+def get_model_path():
+    """
+    Detect the environment (Colab or local) and handle the model file.
+    - In Colab: Use the file directly from Google Drive.
+    - Locally: Check if the file exists, and download it from Google Drive if missing.
+    """
+    model_filename = "Yolov3.h5"
+    model_url = "https://drive.google.com/uc?id=1OysAY19cYXJb2dZW-44YN1aMWXxvgWvL&export=download"  # Replace with your direct download link
+    #https://drive.google.com/file/d/1OysAY19cYXJb2dZW-44YN1aMWXxvgWvL/view?usp=sharing
+
+
+    # Check if running in Colab
+    if 'COLAB_GPU' in os.environ:
+        print("Running in Google Colab")
+
+        # Mount Google Drive
+        from google.colab import drive
+        drive.mount('/content/drive')
+
+        # Path to the model in Google Drive
+        drive_model_path = "/content/drive/MyDrive/Benchmarking_Models/Yolov3.h5"  # Adjust path if needed
+
+        if os.path.exists(drive_model_path):
+            print(f"Using model directly from Google Drive: {drive_model_path}")
+            return drive_model_path
+        else:
+            raise FileNotFoundError(f"Model file not found in Google Drive at {drive_model_path}. Upload it first.")
+
+    # If running locally (e.g., on KHADAS board)
+    else:
+        print("Running on local/board")
+        #local_path = f"/home/khadas/Desktop/working_dir/{model_filename}"  # Adjust as per your local setup
+        local_path = f"assets_path/{model_filename}"  # Adjust as per your local setup
+
+        if not os.path.exists(local_path):
+            print(f"Model file '{model_filename}' not found locally. Downloading from Google Drive...")
+            os.makedirs(os.path.dirname(local_path), exist_ok=True)
+            os.system(f"wget -O {local_path} {model_url}")
+        else:
+            print(f"Model file '{model_filename}' already exists locally.")
+        return local_path
+
+
+# Load the model
+#model_path = get_model_path()
+#print(f"Loading model from: {model_path}")
+#model = load_model(model_path)
+
+# -
+
+
 
 class BoundBox:
 	def __init__(self, xmin, ymin, xmax, ymax, objness = None, classes = None):
@@ -144,7 +332,8 @@ def get_boxes(boxes, labels, thresh):
 	return v_boxes, v_labels, v_scores
 
 # draw all results
-def draw_boxes(filename, v_boxes, v_labels, v_scores):
+#output_filename = "/content/drive/MyDrive/Benchmarking/output.jpg"
+def draw_boxes(filename, v_boxes, v_labels, v_scores, output_filename=None):
 	# load the image
 	data = pyplot.imread(filename)
 	# plot the image
@@ -167,7 +356,15 @@ def draw_boxes(filename, v_boxes, v_labels, v_scores):
 		label = "%s (%.3f)" % (v_labels[i], v_scores[i])
 		pyplot.text(x1, y1, label, color='white')
 	# show the plot
-	pyplot.show()
+	#pyplot.show()
+ 	#Turn off axis for cleaner output
+	#pyplot.axis("off")
+	# Save the plot to a file
+	pyplot.savefig(output_filename, bbox_inches='tight', pad_inches=0, dpi=300)
+	print(f"Output saved to {output_filename}")
+	#pyplot.show()
+	# Clear the plot for the next use
+	pyplot.close()
 
 # draw all results
 def extract_results(v_boxes, v_labels, v_scores):
@@ -178,18 +375,38 @@ def extract_results(v_boxes, v_labels, v_scores):
 		print(v_labels[i],v_scores[i],x1,y1,x2,y2,)
 
 
-# load yolov3 model
-model = load_model('Yolov3.h5')
+# +
+# load yolov3 model #######################
+
+#get model path
+#model_path = get_model_path()
+# Use the folder path
+model_path = os.path.join(assets_path, "Yolov3.h5")
+
+print(f"Loading model from: {model_path}")
+model = load_model(model_path)
+#############################################
+
+
+
+######  input #################################
 # define the expected input shape for the model
 ##input_w, input_h = 416, 416
 input_w, input_h = 608, 608
+
 # define our new photo
-photo_filename = 'zebra.jpg'
-#photo_filename='Animal_diversity.png'
-#photo_filename='download.jpeg'
+#image_path = 'zebra.jpg'
+image_path = os.path.join(assets_path, "Images", "zebra.jpg")
 # load and prepare image
-image, image_w, image_h = load_image_pixels(photo_filename, (input_w, input_h))
-# make prediction
+print(f"Image path: {image_path}")
+image, image_w, image_h = load_image_pixels(image_path, (input_w, input_h))
+###################################################
+
+
+
+
+
+# make prediction #############################
 yhat = model.predict(image)
 # summarize the shape of the list of arrays
 #print(yhat)
@@ -215,6 +432,7 @@ boxes = list()
 for i in range(len(yhat)):
 	# decode the output of the network
 	boxes += decode_netout(yhat[i][0], anchors[i], class_threshold, input_h, input_w)
+# -
 
 # correct the sizes of the bounding boxes for the shape of the image
 correct_yolo_boxes(boxes, image_h, image_w, input_h, input_w)
@@ -240,11 +458,9 @@ v_boxes, v_labels, v_scores = get_boxes(boxes, labels, class_threshold)
 for i in range(len(v_boxes)):
 	print(v_labels[i], v_scores[i])
 # draw what we found
-draw_boxes(photo_filename, v_boxes, v_labels, v_scores)
+draw_boxes(image_path, v_boxes, v_labels, v_scores, f'{assets_path}/output.jpg')
 # detection-results
 extract_results(v_boxes, v_labels, v_scores)
-
-
 
 
 def get_yolo_boxes(model, images, net_h, net_w, anchors, obj_thresh, nms_thresh):
@@ -254,7 +470,7 @@ def get_yolo_boxes(model, images, net_h, net_w, anchors, obj_thresh, nms_thresh)
 
     # preprocess the input
     for i in range(nb_images):
-        batch_input[i] = preprocess_input(images[i], net_h, net_w)        
+        batch_input[i] = preprocess_input(images[i], net_h, net_w)
 
     # run the prediction
     batch_output = model.predict_on_batch(batch_input)
@@ -273,8 +489,8 @@ def get_yolo_boxes(model, images, net_h, net_w, anchors, obj_thresh, nms_thresh)
         correct_yolo_boxes(boxes, image_h, image_w, net_h, net_w)
 
         # suppress non-maximal boxes
-        do_nms(boxes, nms_thresh)        
-           
+        do_nms(boxes, nms_thresh)
+
         batch_boxes[i] = boxes
 
     return batch_boxes
