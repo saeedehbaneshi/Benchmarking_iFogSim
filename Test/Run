@@ -1,4 +1,0 @@
-
-#source ../venv_yolo/bin/activate
-jupytext --to script $1.ipynb
-python3 $1.py

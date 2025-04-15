@@ -6,10 +6,10 @@ import torchvision
 from bgslibrary import AdaptiveBackgroundLearning  # Ensure this is correctly installed
 
 # Paths
-video_path = "./Sample_video.mp4"
-output_filtered_path = "./rigid_motion_filtered.avi"
-output_mask_path = "./rigid_motion_mask.avi"
-csv_output_path = "./rigid_motion_objects.csv"
+video_path = "../assets/input_video.mp4"
+output_filtered_path = "../assets/results_rigid_flow/rigid_motion_filtered.avi"
+output_mask_path = "../assets/results_rigid_flow/rigid_motion_mask.avi"
+csv_output_path = "../assets/results_rigid_flow/rigid_motion_objects.csv"
 
 # Load Background Subtraction Model
 bg_subtractor = AdaptiveBackgroundLearning()

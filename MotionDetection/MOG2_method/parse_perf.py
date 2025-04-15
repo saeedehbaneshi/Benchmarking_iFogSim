@@ -58,7 +58,7 @@ def main():
     }
     
     # Write to Excel
-    EXCEL_OUTPUT_PATH = "perf_metrics.xlsx"
+    EXCEL_OUTPUT_PATH = "../assets/results_MOG2_method/perf_metrics.xlsx"
     if os.path.exists(EXCEL_OUTPUT_PATH):
         wb = load_workbook(EXCEL_OUTPUT_PATH)
         ws = wb.active

@@ -6,9 +6,9 @@ import os
 from openpyxl import Workbook, load_workbook
 
 # Paths
-video_path = "Sample_video.mp4"
-output_video_path = "optical_flow_motion_mask.avi"
-excel_output_path = "perf_metrics_optical_flow.xlsx"
+video_path = "../assets/input_video.mp4"
+output_video_path = "../assets/results_dense_optical_flow/optical_flow_motion_mask.avi"
+excel_output_path = "../assets/results_dense_optical_flow/perf_metrics_optical_flow.xlsx"
 
 # Load the video file
 cap = cv2.VideoCapture(video_path)
