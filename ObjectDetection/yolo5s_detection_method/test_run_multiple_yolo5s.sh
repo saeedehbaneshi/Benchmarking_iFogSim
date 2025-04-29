@@ -4,14 +4,8 @@ set -e
 RESULT_DIR="../assets/results_yolo5s_method"
 mkdir -p "$RESULT_DIR"
 
-for run in {1..1}; do
-  echo "=== YOLOv5-s run #$run ==="
-  perf stat -r 5 \
-    -e instructions,cycles \
-    -o "$RESULT_DIR/perf_yolo5s_${run}.txt" \
-    -- python yolov5/detect.py --weights ../assets/models/yolov5s.pt --source ../assets/motion_mask_output.mp4
-
-  python3 parse_perf_yolo5s.py \
+for run in {1..5}; do
+  python3 test_parse_perf_yolo5s.py \
     "$RESULT_DIR/perf_yolo5s_${run}.txt" \
     "$run"
 done
