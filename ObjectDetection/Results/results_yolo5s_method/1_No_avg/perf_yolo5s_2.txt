@@ -1,0 +1,14 @@
+# started on Wed Apr 30 00:45:56 2025
+
+
+ Performance counter stats for 'python yolov5/detect.py --weights ../assets/models/yolov5s.pt --source ../assets/motion_mask_output.mp4':
+
+   319,234,444,419      instructions                     #    0.98  insn per cycle            
+   325,190,001,724      cycles                                                                
+
+      34.734844407 seconds time elapsed
+
+     113.507549000 seconds user
+       8.747807000 seconds sys
+
+

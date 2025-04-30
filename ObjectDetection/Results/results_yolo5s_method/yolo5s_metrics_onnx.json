@@ -1,0 +1,14 @@
+{
+  "frame_count": 362,
+  "total_frames": 362,
+  "output_frames": 362,
+  "input_mb": 75.57376194000244,
+  "output_mb": 74.0630292892456,
+  "elapsed_s": 43.85472559928894,
+  "fps": 8.254526622915854,
+  "cpu_pct_per_core": 50.479166606298264,
+  "mem_delta_mb": 95.32421875,
+  "detection_frames": 0,
+  "total_detections": 0,
+  "detection_rate_pct": 0.0
+}

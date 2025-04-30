@@ -1,0 +1,14 @@
+# started on Wed Apr 30 01:50:25 2025
+
+
+ Performance counter stats for 'python yolo5s_detection.py':
+
+   379,978,066,426      instructions                     #    0.54  insn per cycle            
+   698,113,818,094      cycles                                                                
+
+      35.982179098 seconds time elapsed
+
+     218.051363000 seconds user
+       7.597347000 seconds sys
+
+
